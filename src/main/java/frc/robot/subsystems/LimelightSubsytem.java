@@ -1,0 +1,64 @@
+// Copyright (c) FIRST and other WPILib contributors.
+// Open Source Software; you can modify and/or share it under the terms of
+// the WPILib BSD license file in the root directory of this project.
+
+package frc.robot.subsystems;
+
+import edu.wpi.first.math.VecBuilder;
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Transform2d;
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableEntry;
+import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
+
+public class LimelightSubsytem extends SubsystemBase {
+
+  private final double limelightMountAngle = 0; //TODO change this, is measured in radians
+  private final double limelightMountHeight = 0; //TODO change this, is measured in in
+  public double x;
+  public double y;
+  public double Area;
+  public double Tid;
+  public NetworkTableEntry tx;
+  public NetworkTableEntry ty; 
+  
+  public static final String LIMELIGHT = "limelight";
+  public static final double SHOOTER_POSITION = 1;
+  //adjustable transform for the limelight pose per-alliance
+  private static final Transform2d LL_BLUE_TRANSFORM = new Transform2d(0, 0, new Rotation2d());
+
+
+  //returns info about the april tag (x pos, y pos, screen area, and id)
+  public LimelightSubsytem() {}
+
+    public void publishToDashboard() {
+          //post to smart dashboard periodically
+    SmartDashboard.putNumber("LimelightX", x);
+    SmartDashboard.putNumber("LimelightY", y);
+    SmartDashboard.putNumber("LimelightArea", Area);
+    SmartDashboard.putNumber("LimelightTid", Tid);
+    }
+
+public void update() {
+  NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight-one");
+    NetworkTableEntry tx = table.getEntry("tx");
+    NetworkTableEntry ty = table.getEntry("ty");
+    NetworkTableEntry ta = table.getEntry("ta");
+    NetworkTableEntry tid = table.getEntry("tid");
+    publishToDashboard();
+
+
+    //read values periodically
+    double x = tx.getDouble(0.0);
+    double y = ty.getDouble(0.0);
+    double Area = ta.getDouble(0.0);
+    double Tid = tid.getDouble(0.0);
+}
+
+public double distanceFromTarget(double targetHeight) {
+  return (targetHeight - limelightMountHeight) / Math.tan(y + limelightMountAngle);
+}
+
+}
