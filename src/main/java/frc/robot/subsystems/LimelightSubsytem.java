@@ -14,6 +14,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class LimelightSubsytem extends SubsystemBase {
+  private RawFiducial[] fiducials; 
 
   private final double limelightMountAngle = 0; //TODO change this, is measured in radians
   private final double limelightMountHeight = 0; //TODO change this, is measured in in
@@ -31,7 +32,42 @@ public class LimelightSubsytem extends SubsystemBase {
 
 
   //returns info about the april tag (x pos, y pos, screen area, and id)
-  public LimelightSubsytem() {}
+  public LimelightSubsytem() {
+    config(); 
+  }
+
+  //RA == Red Alliance, BA == Blue Alliance
+  //1 - RA Far side Coral Station
+  //2 - RA Processor side Coral Station
+  //3 - RA Processor
+  //4 - RA Processor side Barge
+  //5 - RA Fst side Barge
+  //6 - RA Far side reef 1
+  //7 to 11 - RA Reef
+  //12 - BA Processor side Coral Station
+  //13 - BA Far side Coral Station
+  //14 - BA Far side Barge
+  //15 - BA Processor side Barge
+  //16 - BA Processor
+  //17 to 22 - BA Reef
+
+  public void config() {
+    // LimelightHelpers.setCropWindow("", -0.5, 0.5, -0.5, 0.5);
+    //LimelightHelpers.setCameraPose_RobotSpace(
+      "",
+      //Meters.convertFrom(12.75, Inches),
+      0,
+      0.195,
+      0,
+      0,
+      0);
+      LimelightHelpers.SetFiducialIDFiltersOverride("", new int[] {1, 4 });
+  }
+
+  @Override
+  public void periodic(){
+    fiducials = LimelightHelpers.getRawFiducials("");
+  }
 
     public void publishToDashboard() {
           //post to smart dashboard periodically
@@ -56,6 +92,15 @@ public void update() {
     double Area = ta.getDouble(0.0);
     double Tid = tid.getDouble(0.0);
 }
+public RawFiducial getFiducialWithId(int id) {
+  for (RawFiducial fiducial : fiducials) {
+    if (fiducial.id != id) {
+      continue; 
+    }
+  
+  }
+}
+
 
 public double distanceFromTarget(double targetHeight) {
   return (targetHeight - limelightMountHeight) / Math.tan(y + limelightMountAngle);
