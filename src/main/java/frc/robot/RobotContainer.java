@@ -36,7 +36,6 @@ public class RobotContainer {
 
     public final CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
     public final LimelightSubsytem limeLight = TunerConstants.createLimeLight();
-    public final AimCommand aimCommand = new AimCommand(drivetrain, limeLight);
 
     public RobotContainer() 
     {
@@ -69,7 +68,7 @@ point.withModuleDirection(new Rotation2d(-joystick.getLeftY(), -joystick.getLeft
         joystick.start().and(joystick.x()).whileTrue(drivetrain.sysIdQuasistatic(Direction.kReverse));
 
         //tests the aim command class
-        joystick.rightBumper().onTrue(aimCommand);
+        joystick.rightBumper().onTrue(new AimCommand(drivetrain, limeLight, 6));
 
         // reset the field-centric heading on left bumper press
         joystick.leftBumper().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));

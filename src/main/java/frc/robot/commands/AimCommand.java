@@ -24,6 +24,8 @@ public class AimCommand extends Command
     private static final SwerveRequest.RobotCentric alignRequest = new SwerveRequest.RobotCentric();
     private static final SwerveRequest.Idle idleRequest = new SwerveRequest.Idle();
 
+    private int id = 1;
+
     //#region attempt1
 
     /*
@@ -92,15 +94,16 @@ public class AimCommand extends Command
      * am the aimest one. */
 
      //#endregion
-    public AimCommand(CommandSwerveDrivetrain drivetrain, LimelightSubsytem limelight) 
+    public AimCommand(CommandSwerveDrivetrain drivetrain, LimelightSubsytem limelight, int fiducialId) 
     {
         this.drivetrain = drivetrain;
         this.limeLight = limelight;
+        this.id = fiducialId;
     }
     
     @Override public void initialize() 
     {
-
+        
     }
 
     @Override public void execute() 
@@ -109,7 +112,7 @@ public class AimCommand extends Command
 
         try 
         {
-            fiducial = limeLight.getFiducialWithId(4);
+            fiducial = limeLight.getFiducialWithId(id);
 
             final double rotationalRate = rotationalPidController.calculate(fiducial.txnc, 0) * TunerConstants.MaxAngularRate * 0.2;
             final double velocityX = xPidController.calculate(fiducial.distToRobot, 2.25) * TunerConstants.MaxSpeed * -0.5;
