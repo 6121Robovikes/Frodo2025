@@ -4,6 +4,9 @@
 
 package frc.robot.subsystems;
 
+import static edu.wpi.first.units.Units.Inches;
+import static edu.wpi.first.units.Units.Meters;
+
 import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Transform2d;
@@ -12,7 +15,10 @@ import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.LimelightHelpers;
+import frc.robot.LimelightHelpers.RawFiducial;
 
+//tanner spelled subsystem wrong lol :P
 public class LimelightSubsytem extends SubsystemBase {
   private RawFiducial[] fiducials; 
 
@@ -52,16 +58,16 @@ public class LimelightSubsytem extends SubsystemBase {
   //17 to 22 - BA Reef
 
   public void config() {
-    // LimelightHelpers.setCropWindow("", -0.5, 0.5, -0.5, 0.5);
-    //LimelightHelpers.setCameraPose_RobotSpace(
+    LimelightHelpers.setCropWindow("", -0.5, 0.5, -0.5, 0.5);
+    LimelightHelpers.setCameraPose_RobotSpace(
       "",
-      //Meters.convertFrom(12.75, Inches),
+      Meters.convertFrom(12.75, Inches),
       0,
       0.195,
       0,
       0,
       0);
-      LimelightHelpers.SetFiducialIDFiltersOverride("", new int[] {1, 4 });
+      LimelightHelpers.SetFiducialIDFiltersOverride("", new int[] {1, 4});
   }
 
   @Override
@@ -85,22 +91,34 @@ public void update() {
     NetworkTableEntry tid = table.getEntry("tid");
     publishToDashboard();
 
-
     //read values periodically
     double x = tx.getDouble(0.0);
     double y = ty.getDouble(0.0);
     double Area = ta.getDouble(0.0);
     double Tid = tid.getDouble(0.0);
 }
-public RawFiducial getFiducialWithId(int id) {
-  for (RawFiducial fiducial : fiducials) {
-    if (fiducial.id != id) {
+
+/**Returns a raw fiducial given it's id */
+public RawFiducial getFiducialWithId(int id) 
+{
+  for (RawFiducial fiducial : fiducials) 
+  {
+    if (fiducial.id != id) 
+    {
       continue; 
     }
-  
+    
+    return fiducial; 
   }
+
+  throw new NoSuchTargetException("No target with ID " + id + " is in view!");
 }
 
+public static class NoSuchTargetException extends RuntimeException {
+  public NoSuchTargetException(String message) {
+    super(message);
+  }
+}
 
 public double distanceFromTarget(double targetHeight) {
   return (targetHeight - limelightMountHeight) / Math.tan(y + limelightMountAngle);
