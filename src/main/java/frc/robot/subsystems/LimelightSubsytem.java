@@ -7,7 +7,6 @@ package frc.robot.subsystems;
 import static edu.wpi.first.units.Units.Inches;
 import static edu.wpi.first.units.Units.Meters;
 
-import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.networktables.NetworkTable;
@@ -23,7 +22,7 @@ public class LimelightSubsytem extends SubsystemBase {
   private RawFiducial[] fiducials; 
 
   private final double limelightMountAngle = 0; //TODO change this, is measured in radians
-  private final double limelightMountHeight = 0; //TODO change this, is measured in in
+  private final double limelightMountHeight = 16.5; //TODO change this, is measured in in
   public double x;
   public double y;
   public double Area;
@@ -32,9 +31,9 @@ public class LimelightSubsytem extends SubsystemBase {
   public NetworkTableEntry ty; 
   
   public static final String LIMELIGHT = "limelight";
-  public static final double SHOOTER_POSITION = 1;
+  //public static final double SHOOTER_POSITION = .5;
   //adjustable transform for the limelight pose per-alliance
-  private static final Transform2d LL_BLUE_TRANSFORM = new Transform2d(0, 0, new Rotation2d());
+  //private static final Transform2d LL_BLUE_TRANSFORM = new Transform2d(0, 0, new Rotation2d());
 
 
   //returns info about the april tag (x pos, y pos, screen area, and id)
@@ -58,7 +57,15 @@ public class LimelightSubsytem extends SubsystemBase {
   //17 to 22 - BA Reef
 
   public void config() {
-    LimelightHelpers.setCropWindow("", -0.5, 0.5, -0.5, 0.5);
+
+    //height and width should be between 0 and 1
+    double windowHeight = 0.55;
+    double windowWidth = 0.55;
+    double windowYOffset = 0;
+
+    LimelightHelpers.setCropWindow("", -windowWidth, windowWidth, 
+    (-windowHeight) + windowYOffset, (windowHeight) + windowYOffset);
+
     LimelightHelpers.setCameraPose_RobotSpace(
       "",
       Meters.convertFrom(12.75, Inches),
@@ -83,19 +90,20 @@ public class LimelightSubsytem extends SubsystemBase {
     SmartDashboard.putNumber("LimelightTid", Tid);
     }
 
-public void update() {
-  NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight-one");
-    NetworkTableEntry tx = table.getEntry("tx");
-    NetworkTableEntry ty = table.getEntry("ty");
-    NetworkTableEntry ta = table.getEntry("ta");
-    NetworkTableEntry tid = table.getEntry("tid");
-    publishToDashboard();
+public void update() 
+{
+  //NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight-one");
+    //NetworkTableEntry tx = table.getEntry("tx");
+    //NetworkTableEntry ty = table.getEntry("ty");
+    //NetworkTableEntry ta = table.getEntry("ta");
+    //NetworkTableEntry tid = table.getEntry("tid");
+    //publishToDashboard();
 
     //read values periodically
-    double x = tx.getDouble(0.0);
-    double y = ty.getDouble(0.0);
-    double Area = ta.getDouble(0.0);
-    double Tid = tid.getDouble(0.0);
+    //double x = tx.getDouble(0.0);
+    //double y = ty.getDouble(0.0);
+    //double Area = ta.getDouble(0.0);
+    //double Tid = tid.getDouble(0.0);
 }
 
 /**Returns a raw fiducial given it's id */

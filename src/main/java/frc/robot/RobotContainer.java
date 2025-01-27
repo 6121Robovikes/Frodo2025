@@ -60,8 +60,8 @@ public class RobotContainer {
 point.withModuleDirection(new Rotation2d(-joystick.getLeftY(), -joystick.getLeftX()))
         ));
 
-        // Run SysId routines when holding back/start and X/Y.
-        // Note that each routine should be run exactly once in a single log.
+        //Run SysId routines when holding back/start and X/Y.
+        //Note that each routine should be run exactly once in a single log.
         joystick.back().and(joystick.y()).whileTrue(drivetrain.sysIdDynamic(Direction.kForward));
         joystick.back().and(joystick.x()).whileTrue(drivetrain.sysIdDynamic(Direction.kReverse));
         joystick.start().and(joystick.y()).whileTrue(drivetrain.sysIdQuasistatic(Direction.kForward));
@@ -69,13 +69,14 @@ point.withModuleDirection(new Rotation2d(-joystick.getLeftY(), -joystick.getLeft
 
         //tests the aim command class
         joystick.rightBumper().onTrue(new AimCommand(drivetrain, limeLight, 6));
-
-        // reset the field-centric heading on left bumper press
+        
+        //Resets the field-centric heading on left bumper press
         joystick.leftBumper().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));
 
         drivetrain.registerTelemetry(logger::telemeterize);
     }
 
+    /**No autonomous command configured */
     public Command getAutonomousCommand() 
     {
         return Commands.print("No autonomous command configured");

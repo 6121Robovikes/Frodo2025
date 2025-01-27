@@ -210,6 +210,142 @@ public class TunerConstants
         return new LimelightSubsytem();
     }
 
+    //#region Name to fid index
+
+    public enum Tags
+    {
+        Farside_CoralStation,
+        ProcessorSide_CoralStation,
+        Processor,
+        ProcessorSide_Barge,
+        FarSide_Barge,
+        Reef_1,
+        Reef_2,
+        Reef_3,
+        Reef_4,
+        Reef_5,
+        Reef_6,
+    }
+
+    public enum AllianceTag
+    {
+        RedAlliance,
+        BlueAlliance,
+    }
+
+    /**Will return the april tag's corresponding index given a selected tag */
+    public static int AprilTagToIndex(Tags tag, AllianceTag alliance)
+    {
+        if(alliance == AllianceTag.RedAlliance)
+        {
+            if(tag == Tags.Farside_CoralStation)
+            {
+                return 1;
+            }
+            else if(tag == Tags.ProcessorSide_CoralStation)
+            {
+                return 2;
+            }
+            else if(tag == Tags.Processor)
+            {
+                return 3;
+            }
+            else if(tag == Tags.ProcessorSide_Barge)
+            {
+                return 4;
+            }
+            else if(tag == Tags.FarSide_Barge)
+            {
+                return 5;
+            }
+            else if(tag == Tags.Reef_1)
+            {
+                return 6;
+            }
+            else if(tag == Tags.Reef_2)
+            {
+                return 7;
+            }
+            else if(tag == Tags.Reef_3)
+            {
+                return 8;
+            }
+            else if(tag == Tags.Reef_4)
+            {
+                return 9;
+            }
+            else if(tag == Tags.Reef_5)
+            {
+                return 10;
+            }
+            else if(tag == Tags.Reef_6)
+            {
+                return 11;
+            }
+            else
+            {
+                return 1;
+            }
+        }
+        else if(alliance == AllianceTag.BlueAlliance)
+        {
+            if(tag == Tags.Farside_CoralStation)
+            {
+                return 13;
+            }
+            else if(tag == Tags.ProcessorSide_CoralStation)
+            {
+                return 12;
+            }
+            else if(tag == Tags.Processor)
+            {
+                return 16;
+            }
+            else if(tag == Tags.ProcessorSide_Barge)
+            {
+                return 15;
+            }
+            else if(tag == Tags.FarSide_Barge)
+            {
+                return 14;
+            }
+            else if(tag == Tags.Reef_1)
+            {
+                return 17;
+            }
+            else if(tag == Tags.Reef_2)
+            {
+                return 18;
+            }
+            else if(tag == Tags.Reef_3)
+            {
+                return 19;
+            }
+            else if(tag == Tags.Reef_4)
+            {
+                return 20;
+            }
+            else if(tag == Tags.Reef_5)
+            {
+                return 21;
+            }
+            else if(tag == Tags.Reef_6)
+            {
+                return 22;
+            }
+            else
+            {
+                return 1;
+            }
+        }
+        else
+        {
+            return 1;
+        }
+    }
+
+    //#endregion
+
     /**
      * Swerve Drive class utilizing CTR Electronics' Phoenix 6 API with the selected device types.
      */
